@@ -186,7 +186,7 @@ aggregate means to combine or bring together and we are aggregatings some number
 
 #### AS
 
-AS creates an alias a temporary name for a column or table in the result of a query. It makes output clearer and lets you refer to expressions more readably.
+AS -> creates an alias a temporary name for a column or table in the result of a query. It makes output clearer and lets you refer to expressions more readably.
 
 #### DISTINCT
 
