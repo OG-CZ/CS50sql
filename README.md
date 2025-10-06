@@ -2,7 +2,7 @@
 
 [CS50’s Introduction to Databases with SQL](https://cs50.harvard.edu/sql/)
 
-- [0 - Querying (SELECT, WHERE, JOIN)](./0-querying/README.md)
+- [0 - Querying (SELECT, WHERE, FROM)](./0-querying/README.md)
 - [1 - Relating (keys, relationships)](./1-relating/README.md)
 - [2 - Designing (schema, normalization)](./2-designing/README.md)
 - [3 - Writing (DDL, DML, transactions)](./3-writing/README.md)
