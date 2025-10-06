@@ -1,7 +1,5 @@
 # Querying
 
-FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT/OFFSET
-
 Querying means asking a question to the database in other words, you’re requesting specific data from one or more tables.
 
 - [Querying](#querying)
