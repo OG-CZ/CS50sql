@@ -1,6 +1,8 @@
 # Querying
 
-Querying is a way in Structured Query Language to search a data in a table
+FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT/OFFSET
+
+Querying means asking a question to the database in other words, you’re requesting specific data from one or more tables.
 
 - [Querying](#querying)
 - [Tables](#tables)
@@ -34,6 +36,7 @@ Querying is a way in Structured Query Language to search a data in a table
   - [DISTINCT](#distinct)
   - [AS (aliases)](#as-aliases)
 - [SQLite commands](#sqlite-commands)
+- [Querying logical execution summary](#querying-logical-execution-summary)
 
 ### tables
 
@@ -93,6 +96,7 @@ sqlite3 file_name.db
 ### SELECT
 
 - SELECT is selecting a table to show
+- we select here the column we want to
 
 #### LIMIT
 
@@ -166,6 +170,7 @@ BUT BY DEFAULT IT IS ORDERING BY SMALLEST TO GREATEST
 
 - reads data with greatest number at the top down to lowest for numbers
 - reads data with A to Z for strings
+- by default everythign is ASC
 
 #### ORDER BY ... DESC
 
@@ -200,3 +205,37 @@ DISTINCT is only a query-time operator
 - .headers on/off -> Show or hide column names
 - .mode column -> Outputs aligned text columns (default for readability)
 - .mode box -> Output results in a boxed table format
+
+### querying logical execution summary
+
+FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT/OFFSET
+
+- FROM: build rows from tables (and JOINs/subqueries).
+- WHERE: filter individual rows (cannot use aggregates here).
+- GROUP BY: group remaining rows into buckets by column(s).
+- HAVING: filter those groups (can use aggregate results).
+- SELECT: compute the output columns/expressions (and create aliases).
+- ORDER BY: sort the final rows.
+- LIMIT/OFFSET: return only the requested slice of rows.
+
+```sql
+-- Sort+limit first, then filter that limited set (use CTE/subquery)
+WITH top10 AS (
+  SELECT title, rating, votes
+  FROM longlist
+  ORDER BY votes DESC
+  LIMIT 10
+)
+SELECT *
+FROM top10
+WHERE rating >= 4.0;
+```
+
+```sql
+-- Filter then sort (usual)
+SELECT title, rating
+FROM longlist
+WHERE rating >= 4.0
+ORDER BY votes DESC
+LIMIT 10;
+```
