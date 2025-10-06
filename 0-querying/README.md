@@ -94,7 +94,7 @@ sqlite3 file_name.db
 ### SELECT
 
 - SELECT is selecting a table to show
-- we select here the column we want to
+- we select here the column we want to show
 
 #### LIMIT
 
