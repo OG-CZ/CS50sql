@@ -1,5 +1,8 @@
 # Relating
 
+Relating in a database means connecting data in different tables using relationships, usually with keys (like primary and foreign keys).
+This lets you link records (for example, matching each book to its author) and organize data efficiently, so you can query related information across tables.
+
 - [Relational Database](#relational-database)
 - [Relating](#relating)
 - [Entity Relationship Diagram](#entity-relationship-diagram)
