@@ -214,7 +214,7 @@ Keeps everyone from the **right** (Grades), even if they have no student.
 
 ![FULL OUTER JOIN](https://www.w3schools.com/sql/img_fulljoin.gif)
 
-**Shows everything from both tables — all matches and non-matches.**
+**Shows everything from both tables all matches and non-matches.**
 
 | student_id | name    | grade |
 | ---------- | ------- | ----- |
