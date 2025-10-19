@@ -280,7 +280,7 @@ this is the alternative version of WHERE but only for GROUP when applying agrega
 ```sql
 SELECT "book_id", COUNT("rating") AS 'total ratings'
 FROM ratings GROUP BY "book_id"
-HAVING "total ratings" < 200; -- it use different keyword for groups to apply and not WHERE
+HAVING "total ratings" < 200; -- it use different keyword for groups to apply and not WHERE.
 ```
 
 ### SUMMARY INTUITION
