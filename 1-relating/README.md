@@ -59,6 +59,31 @@ this is a relationship
 - one -> something atleast one thing that relates to it at a table
 - many -> some entity can have many entity related to it
 
+| Relationship Type    | Notation              | Meaning (Plain English)                                                                                       | Example                                 | Key Idea                                                     |
+| -------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------- | --------------------------------------- | ------------------------------------------------------------ |
+| **One-to-One**       | `1 — 1`               | Each entity in A can be related to **at most one** in B, and vice versa.                                      | Person ↔ Passport                       | Perfect pairing (no duplicates).                             |
+| **One-and-Only-One** | `1 — 1` _(exclusive)_ | Each entity in A is paired with **exactly one specific** entity in B — and that B belongs **only** to that A. | Husband ↔ Wife (in a monogamous system) | Exclusive one-to-one pair (cannot exist without each other). |
+| **One-to-Many**      | `1 — *`               | One entity in A can be related to **many** in B, but each B belongs to **only one** A.                        | Teacher → Students                      | “Parent to children” pattern.                                |
+| **Many-to-One**      | `* — 1`               | Many entities in A are linked to **one** in B.                                                                | Students → Department                   | Reverse of one-to-many.                                      |
+| **Many-to-Many**     | `* — *`               | Many entities in A can be related to **many** in B.                                                           | Students ↔ Courses                      | Groups linked to groups.                                     |
+| **Zero-or-One**      | `0..1`                | Entity may be related to **none or one** of the other type.                                                   | Person → Passport (optional)            | Optional single link.                                        |
+| **Zero-or-Many**     | `0..*`                | Entity may be related to **none or multiple** others.                                                         | Customer → Orders                       | Optional, unlimited.                                         |
+| **One-or-More**      | `1..*`                | Entity must be related to **at least one**, possibly many.                                                    | Department → Employees                  | At least one required.                                       |
+
+<!--
+| Notation              | Relationship Type                        | Min..Max     | Common Phrase                        | Meaning (in words)                                                                       | Example                                                                                                         |
+| --------------------- | ---------------------------------------- | ------------ | ------------------------------------ | ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **(1) —— (1)**        | One-to-One (Mandatory ↔ Mandatory)       | 1..1 ↔ 1..1  | _“One and only one on both sides”_   | Each entity **must** have exactly one of the other. Neither can exist without the other. | Each **User** must have exactly one **UserProfile**, and each profile belongs to one user.                      |
+| **(1) —— (0..1)**     | One-to-One (Mandatory ↔ Optional)        | 1..1 ↔ 0..1  | _“One and only one to zero or one”_  | One side **must exist**, the other **may or may not**.                                   | Each **Person** may have **zero or one Passport**.                                                              |
+| **(0..1) —— (0..1)**  | One-to-One (Optional ↔ Optional)         | 0..1 ↔ 0..1  | _“Zero or one to zero or one”_       | Both sides are **optional** — they can exist independently or be paired.                 | A **Patient** may or may not have **one Insurance record**, and vice versa.                                     |
+| **(1) —— (1..\*)**    | One-to-Many (Mandatory ↔ Mandatory many) | 1..1 ↔ 1..\* | _“One and only one to one or more”_  | One side **must have** at least one related record; the other can have **many**.         | A **Department** must have **one or more Employees**.                                                           |
+| **(1) —— (0..\*)**    | One-to-Many (Mandatory ↔ Optional many)  | 1..1 ↔ 0..\* | _“One and only one to zero or many”_ | One side **must exist**, the other may have **none or many**.                            | A **Teacher** may teach **zero or many Students**.                                                              |
+| **(0..1) —— (1..\*)** | One-to-Many (Optional ↔ Mandatory many)  | 0..1 ↔ 1..\* | _“Zero or one to one or more”_       | One side **optional**, but the other must have **at least one**.                         | A **Course** may belong to **zero or one Department**, but a **Department** must offer **one or more Courses**. |
+| **(0..1) —— (0..\*)** | One-to-Many (Optional ↔ Optional many)   | 0..1 ↔ 0..\* | _“Zero or one to zero or many”_      | Both sides optional — may or may not exist.                                              | A **Customer** may place **zero or many Orders**; some Orders may not yet be assigned to a Customer.            |
+| **(1.._) —— (1.._)**  | Many-to-Many (Mandatory ↔ Mandatory)     | 1.._ ↔ 1.._  | _“One or more to one or more”_       | Each side must relate to at least one of the other.                                      | Every **Student** must take **at least one Course**, and every **Course** must have **at least one Student**.   |
+| **(1.._) —— (0.._)**  | Many-to-Many (Mandatory ↔ Optional many) | 1.._ ↔ 0.._  | _“One or more to zero or many”_      | One side mandatory, the other optional.                                                  | Each **Teacher** teaches **one or more Subjects**, but some **Subjects** may not yet have a Teacher.            |
+| **(0.._) —— (0.._)**  | Many-to-Many (Optional ↔ Optional)       | 0.._ ↔ 0.._  | _“Zero or many to zero or many”_     | Fully optional relationship; both sides can have zero or many connections.               | A **Student** may take **zero or many Courses**, and a **Course** may have **zero or many Students**.           | -->
+
 ### keys
 
 this are fundamental idea that relates database one from to another
@@ -139,16 +164,18 @@ The IN keyword is mainly used in SQL for querying to filter results where a colu
 Example:
 
 ```sql
-SELECT * FROM books WHERE id IN (1, 2, 3); -- returns 1,2,3
-```
+-- Retrieve all students whose grade is exactly 'A'
+-- Single-value comparison using '='
+SELECT *
+FROM students
+WHERE grade = 'A';
+-- WHERE grade = ('A', 'B'); -- WRONG
 
-another example for subquerying:
-
-```sql
--- ### without ON like this below just returns one data
-SELECT * FROM books WHERE author_id IN (
-    SELECT id FROM authors WHERE birth_year > 1950
-);
+-- Retrieve all students whose grade is either 'A' or 'B'
+-- Multi-value comparison using 'IN'
+SELECT *
+FROM students
+WHERE grade IN ('A', 'B');
 ```
 
 ### Relating Flow (Logical Execution)
@@ -164,6 +191,29 @@ Relating flow in a database is the process of connecting data across multiple ta
 
 - joins is take some tables and temporarily combines it with other tables
 - this combines the column of data meaning all instances of that data type
+
+We wrap a query only when we need its result as data in another operation (INTERSECT, UNION, JOIN, etc.).
+
+Why:
+Wrapping turns the inner query’s output into a virtual table that SQL can combine.
+
+```sql
+-- No wrap needed (simple)
+SELECT * FROM students WHERE grade > 90
+INTERSECT
+SELECT * FROM students WHERE section = 'A';
+-- Wrap needed (has ORDER BY / LIMIT)
+SELECT * FROM (
+    SELECT * FROM students ORDER BY grade DESC LIMIT 10
+)
+INTERSECT
+SELECT * FROM (
+    SELECT * FROM students ORDER BY age LIMIT 10
+);
+```
+
+Note:
+If the inner query has ORDER BY or LIMIT, wrapping is required otherwise, optional.
 
 #### ON Keyword
 
@@ -322,3 +372,51 @@ HAVING "total ratings" < 200; -- it use different keyword for groups to apply an
 - **HAVING** → Filter after grouping.
 - **GROUP BY** → Summarize similar data.
 - **ORDER BY** → Arrange the final results neatly.
+
+<!-- - [Relational Database](#relational-database)
+- [Relating](#relating)
+- [Entity Relationship Diagram](#entity-relationship-diagram)
+- [Keys](#keys)
+  - [ISBN](#isbn)
+  - [Primary Key](#primary-key)
+  - [Foreign Key](#foreign-key)
+  - [Improving Primary Key](#improving-primary-key)
+  - [Many to Many](#many-to-many)
+- [Subqueries](#subqueries)
+- [IN Keyword](#in-keyword)
+- [Relating Flow (Logical Execution)](#relating-flow-logical-execution)
+- [JOIN](#join)
+  - [ON Keyword](#on-keyword)
+  - [INNER JOIN](#inner-join)
+  - [LEFT JOIN](#left-join)
+  - [RIGHT JOIN](#right-join)
+  - [FULL OUTER JOIN](#full-outer-join)
+  - [Summary Table](#summary-table)
+- [Sets](#sets)
+  - [INTERSECT](#intersect)
+  - [UNION](#union)
+  - [EXCEPT](#except)
+- [Groups](#groups)
+  - [GROUP BY](#group-by)
+  - [HAVING](#having)
+
+---
+
+### Summary Intuition
+
+- **JOIN**: Combines data from two or more tables using a related column.
+- **INNER JOIN**: Shows only rows that exist in both tables.
+- **LEFT JOIN (LEFT OUTER JOIN)**: Shows all rows from the left table and matching ones from the right; missing matches become NULL.
+- **RIGHT JOIN (RIGHT OUTER JOIN)**: Shows all rows from the right table and matching ones from the left; missing matches become NULL.
+- **FULL OUTER JOIN**: Shows all rows from both tables, matching where possible and filling missing parts with NULL.
+- **UNION**: Combines results from two queries and removes duplicates.
+- **INTERSECT**: Returns only the rows that appear in both results.
+- **EXCEPT**: Returns rows from the first result that are not in the second.
+- **GROUP BY**: Groups rows with the same values to use aggregate functions like COUNT(), SUM(), AVG().
+- **HAVING**: Filters groups created by GROUP BY; used for aggregate conditions.
+- **WHERE**: Filters rows before grouping or joining.
+- **ORDER BY**: Sorts the final result in ascending (ASC) or descending (DESC) order.
+- **PRIMARY KEY**: Uniquely identifies each record in a table.
+- **FOREIGN KEY**: References a primary key in another table to create a relationship.
+- **SUBQUERY**: A query inside another query, often used to find related data.
+- **IN**: Checks if a value exists within a list or subquery result. -->

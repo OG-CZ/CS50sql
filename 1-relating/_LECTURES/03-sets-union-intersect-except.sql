@@ -38,16 +38,28 @@ SELECT "name" FROM authors
 EXCEPT 
 SELECT "name" FROM translators; -- shows name that are in the authors table but not in translator even they are both
 
-SELECT "book_id" FROM translated WHERE "translator_id" = (
-    SELECT "id" FROM translators WHERE "name" = 'Sophie Hughes'
+SELECT "book_id" 
+FROM translated
+WHERE "translator_id" = (
+    SELECT "id" 
+    FROM translators
+    WHERE "name" = 'Sophie Hughes'
 );
 
 -- ### EXAMPLE INTERSECT SUBQUERY
 
-SELECT "book_id" FROM translated WHERE "translator_id" = ( -- Find all books that were translated by both Sophie Hughes and Margaret Jull Costa.
-    SELECT "id" FROM translators WHERE "name" = 'Sophie Hughes'
+SELECT "book_id" 
+FROM translated 
+WHERE "translator_id" = ( -- Find all books that were translated by both Sophie Hughes and Margaret Jull Costa.
+    SELECT "id" 
+    FROM translators 
+    WHERE "name" = 'Sophie Hughes'
 )
-INTERSECT
-SELECT "book_id" FROM translated WHERE "translator_id" = (
-    SELECT "id" FROM translators WHERE "name" = 'Margaret Jull Costa'
+INTERSECT 
+SELECT "book_id" 
+FROM translated 
+WHERE "translator_id" = (
+    SELECT "id" 
+    FROM translators 
+    WHERE "name" = 'Margaret Jull Costa'
 );
